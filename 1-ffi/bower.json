@@ -1,0 +1,23 @@
+{
+  "name": "1-ffi",
+  "version": "0.0.1",
+  "homepage": "https://github.com/clayrat/fpv8-purescript",
+  "description": "FPV8 talk example 1",
+  "keywords": [
+    "purescript",
+    "dygraphs"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-debug" : "*",
+    "purescript-dygraphs":"git://github.com/clayrat/purescript-dygraphs.git#80d36df868b45d8ce48e9936065f7103150ab524"
+  }
+}
