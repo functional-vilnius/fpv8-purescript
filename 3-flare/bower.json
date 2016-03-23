@@ -2,8 +2,9 @@
   "name": "3-flare",
   "version": "0.0.1",
   "description": "FPV8 talk example 3",
-  "moduleType": [
-    "node"
+  "keywords": [
+    "purescript",
+    "flare"
   ],
   "ignore": [
     "**/.*",

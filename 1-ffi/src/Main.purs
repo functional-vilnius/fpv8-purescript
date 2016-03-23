@@ -31,4 +31,3 @@ main = do
       , xlabel = Just $ "X label here"
       , ylabel = Just $ "Y label here!"
       }
-

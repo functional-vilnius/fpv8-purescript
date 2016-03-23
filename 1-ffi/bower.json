@@ -7,7 +7,6 @@
     "purescript",
     "dygraphs"
   ],
-  "license": "MIT",
   "private": true,
   "ignore": [
     "**/.*",
