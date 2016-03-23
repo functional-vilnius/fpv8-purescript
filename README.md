@@ -25,7 +25,7 @@ Install the following packages via npm
 *Note:* On Linux/OS X you will need to use `sudo` to use the `-g` flag, unless
 you setup `npm` not to use it,
 [like here](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md),
-or if you're ready fiddle with your `PATH` manually.
+or otherwise fiddle with your `PATH` manually.
 
 
 ### Using Vagrant
