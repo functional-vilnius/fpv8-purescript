@@ -3,8 +3,10 @@ module Main where
 import Prelude (Unit, negate, ($), bind)
 import Data.Maybe (Maybe(..))
 import Control.Monad.Eff (Eff)
+
 import DOM (DOM)
 import DyGraphs (DyData(Array2D, CSV), defaultDyOpts, newDyGraph, RunDyGraph)
+
 import Util.DOM (tryWithNode, setText)
 
 plotData :: DyData
