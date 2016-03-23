@@ -92,7 +92,15 @@ of purescript to be able to use all of its plugins.
 
 * [Download Atom](https://atom.io/)
 * Install the [language-purescript](https://atom.io/packages/language-purescript) package
+* Install the [linter](https://atom.io/packages/linter) package
 * Install the [ide-purescript](https://atom.io/packages/ide-purescript) package
+* The current package of purescript seems to be buggy and doesn't expose the required
+	`psc-ide-client` and `psc-ide-server` binaries, so you will need to either add them
+  to your path by hand or configure it in `ide-purescript` settings. To locate them,
+  run
+
+		find $(npm config get prefix) -type f -name psc-ide-*
+
 
 For docs on installing Atom packages, look here:
 [https://atom.io/docs/v1.6.0/using-atom-atom-packages](https://atom.io/docs/v1.6.0/using-atom-atom-packages)
