@@ -1,8 +1,11 @@
 {
   "name": "2-aff",
-  "version": "1.0.0",
-  "moduleType": [
-    "node"
+  "version": "0.0.1",
+  "homepage": "https://github.com/clayrat/fpv8-purescript",
+  "description": "FPV8 talk example 2",
+  "keywords": [
+    "purescript",
+    "aff"
   ],
   "ignore": [
     "**/.*",
@@ -11,10 +14,13 @@
     "output"
   ],
   "dependencies": {
-    "purescript-affjax": "latest"
+    "purescript-affjax": "latest",
+    "purescript-json": "latest",
+    "purescript-debug" : "latest"
   },
   "resolutions": {
     "purescript-aff": "^0.16.0",
-    "purescript-transformers": "^0.8.1"
+    "purescript-transformers": "^0.8.1",
+    "purescript-maps": "^0.5.0"
   }
 }
