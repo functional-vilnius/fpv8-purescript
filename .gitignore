@@ -1,6 +1,7 @@
 /.*
 !/.gitignore
 !/.travis.yml
+.psci
 output/
 node_modules/
 bower_components/

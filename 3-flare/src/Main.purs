@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, (<$>), ($), bind, (*), show, (-), (+), (++), (/))
+import Prelude (Unit, (<$>), ($), bind, show, (-), (+), (*), (/), (++))
 import Data.Int (toNumber)
 import Data.Maybe.Unsafe (fromJust)
 import Data.Array ((..), zip, length, sort)
