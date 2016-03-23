@@ -1,7 +1,7 @@
 /* global exports */
 "use strict";
 
-// module Main
+// module Util.DOM
 exports.querySelectorImpl = function(r, f, s) {
  return function() {
   var result = document.querySelector(s);

@@ -1,6 +1,7 @@
 {
-  "name": "flare-viz",
-  "version": "1.0.0",
+  "name": "3-flare",
+  "version": "0.0.1",
+  "description": "FPV8 talk example 3",
   "moduleType": [
     "node"
   ],
