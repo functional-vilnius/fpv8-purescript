@@ -1,25 +1,69 @@
 module Main where
 
-import Prelude (Unit, ($), bind, id, const)
+import Prelude ( Unit, ($), (#), (<#>), (++), (<>), (>>>), (>>=), bind, id, const, show, pure, (+), (-), (/), (>), negate)
+import Data.Int (round)
+import Data.Array (catMaybes, partition, replicate, length, zip)
+import Data.Tuple (Tuple(..))
+import Data.Maybe (Maybe(), fromMaybe)
 import Data.Either (either)
+import Data.Foldable (foldl)
+import Data.String (joinWith)
+import Data.StrMap (lookup)
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Aff (launchAff, liftEff')
---import Debug.Trace (trace)
 
---import Data.JSON as JS
 import Network.HTTP.Affjax as AJ
+import Data.Argonaut.Core (Json, toObject, toArray, toNumber)
 import DOM (DOM)
 import DOM.File.Types (Blob)
 
 import Util.DOM
 
-result :: forall e. AJ.Affjax e Blob
-result = AJ.get "http://chart.googleapis.com/chart?chs=300x300&cht=s&chxt=x,y&chd=t:12,87,75,41,23,96,68,71,34,9|98,60,27,34,56,79,58,74,18,76|84,23,69,81,47,94,60,93,64,54&chco=FF0000|0000FF&chdl=Cats|Dogs"
+type Point = { x :: Int, y :: Int, s :: Int }
+
+emptyPoint :: Point
+emptyPoint = {x:0, y:0, s:0}
+
+extractPoint :: Json -> Maybe Point
+extractPoint j = do
+   obj <- toObject j
+   prop <- lookup "properties" obj
+   obj2 <- toObject prop
+   x <- lookup "long_x" obj2 >>= toNumber
+   y <- lookup "lat_y" obj2 >>= toNumber
+   s <- lookup "elevation" obj2 >>= toNumber
+   pure $ { x: (180 + round x) / 4  , y: (90 + round y) / 2 , s: round s }
+
+extractPoints :: Json -> Array Point
+extractPoints j = (fromMaybe [] $ do
+                   obj <- toObject j
+                   arr <- lookup "features" obj
+                   toArray arr) <#> extractPoint # catMaybes
 
 main :: forall eff. Eff ( err :: EXCEPTION, ajax :: AJ.AJAX, dom :: DOM | eff ) Unit
 main = launchAff $ do
-          r <- result
+          d <- getData
+          r <- (extractPoints >>> splitPoints >>> renderPoints "Elevation" "Depression") $ d.response
           urlE <- liftEff' $ blob2url r.response
           liftEff' $ tryWithNode "#chart" $ setSrc $ either (const "bad") id urlE
+
+splitPoints :: Array Point -> Tuple (Array Point) (Array Point)
+splitPoints ps = let
+                   p2 = partition (\p -> p.s > 0) ps
+                   low = (p2.no <#> (\p -> p {s = negate p.s})) <> replicate (length p2.yes - length p2.no) emptyPoint
+                 in Tuple (p2.yes <#> (\p -> p {s = p.s /100})) low
+
+renderPoints :: forall e. String -> String -> Tuple (Array Point) (Array Point) -> AJ.Affjax e Blob
+renderPoints n1 n2 a12 = AJ.get $ "http://chart.googleapis.com/chart?chs=547x547&cht=s&chxt=x,y&chd=t:"
+                                  ++ strPoints a12 ++ "&chco=FF0000|0000FF&chdl=" ++ n1 ++ "|" ++ n2
+                        where
+                          strPoints :: Tuple (Array Point) (Array Point) -> String
+                          strPoints (Tuple a1 a2) =
+                            foldl (\t (Tuple p1 p2) -> { xs : t.xs <> [p1.x, p2.x] , ys : t.ys <> [p1.y, p2.y], ss : t.ss <> [p1.s, p2.s] }) {xs: [], ys: [], ss: []} (zip a1 a2)
+                            # (\t -> [t.xs, t.ys, t.ss] <#> str # joinWith "|")
+                          str a = a <#> show # joinWith ","
+
+getData :: forall e. AJ.Affjax e Json
+getData = AJ.get "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_geography_regions_elevation_points.geojson"
