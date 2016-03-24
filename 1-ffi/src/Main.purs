@@ -5,6 +5,7 @@ import Data.Int (toNumber)
 import Data.Tuple
 import Data.Maybe (Maybe(..))
 import Data.Array (zip, (..), length)
+
 import Control.Monad.Eff (Eff)
 
 import DOM (DOM)
@@ -14,10 +15,10 @@ import Util.DOM (tryWithNode, setText)
 
 --plotData :: DyData
 --plotData = Array2D $ [ [0.0,  0.0 ,  0.0 ,  0.0]
---                      , [0.1,  0.1 , -0.2 ,  0.3]
---                      , [0.2, -0.1 ,  0.2 ,  0.3]
---                      , [0.3,  0.15, -0.25, -0.3]
---                      ]
+--                     , [0.1,  0.1 , -0.2 ,  0.3]
+--                     , [0.2, -0.1 ,  0.2 ,  0.3]
+--                     , [0.3,  0.15, -0.25, -0.3]
+--                     ]
 
 toDyGraph :: Array Number -> Array Number -> DyData
 toDyGraph s1 s2 = zip (1 .. length s1) (zip s1 s2) <#> (\(Tuple i (Tuple e1 e2)) -> [toNumber i, e1, e2]) # Array2D
@@ -29,7 +30,7 @@ main = do
       { title = Just "Data"
         , xlabel = Just "Value"
         , ylabel = Just "Day"
---        showRoller = Just true
+--      , showRoller = Just true
 --      , errorBars = Just true
 --      , stepPlot = Just true
 --      , clickCallback = Just $ \e x pts -> do
@@ -37,6 +38,7 @@ main = do
 --      , highlightCallback = Just $ \e x pts r s -> do
 --          tryWithNode "#msg" $ setText "Point highlighted!"
       }
+
 series1 :: Array Number
 series1 = [ 106.1616296,98.92188981,96.47125453,96.46867633,101.455799,102.2368421,114.709233,107.0379752,101.3964413,103.9022896,92.38084853,105.2355647,87.15531588,119.241544,111.0962582,97.41282225 ]
 series2 :: Array Number
